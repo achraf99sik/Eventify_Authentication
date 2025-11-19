@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2-create-events-table" author="abdeljabbar">
+        <createTable tableName="events">
+            <column name="id" type="CHAR(36)" defaultValueComputed="UUID()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="title" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="TEXT"/>
+
+            <column name="location" type="VARCHAR(200)"/>
+
+            <column name="dateTime" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="capacity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="organizerId" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="events" baseColumnNames="organizerId"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="CASCADE"
+                constraintName="fk_event_organizer"/>
+    </changeSet>
+
+</databaseChangeLog>

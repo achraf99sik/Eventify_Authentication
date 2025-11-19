@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="3-create-registrations-table" author="abdeljabbar">
+        <createTable tableName="registrations">
+            <column name="id" type="CHAR(36)" defaultValueComputed="UUID()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="userId" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="eventId" type="CHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="registeredAt" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="status" type="VARCHAR(20)" defaultValue="pending">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="registrations" baseColumnNames="userId"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="CASCADE"
+                constraintName="fk_registration_user"/>
+
+        <addForeignKeyConstraint
+                baseTableName="registrations" baseColumnNames="eventId"
+                referencedTableName="events" referencedColumnNames="id"
+                onDelete="CASCADE"
+                constraintName="fk_registration_event"/>
+
+        <addUniqueConstraint
+                tableName="registrations"
+                columnNames="userId, eventId"
+                constraintName="unique_user_event"/>
+    </changeSet>
+</databaseChangeLog>
