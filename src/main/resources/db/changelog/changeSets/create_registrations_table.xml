@@ -8,15 +8,15 @@
 
     <changeSet id="3-create-registrations-table" author="abdeljabbar">
         <createTable tableName="registrations">
-            <column name="id" type="CHAR(36)" defaultValueComputed="UUID()">
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="userId" type="CHAR(36)">
+            <column name="userId" type="UUID">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="eventId" type="CHAR(36)">
+            <column name="eventId" type="UUID">
                 <constraints nullable="false"/>
             </column>
 

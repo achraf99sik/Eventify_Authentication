@@ -6,40 +6,29 @@
             http://www.liquibase.org/xml/ns/dbchangelog
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="2-create-events-table" author="abdeljabbar">
-        <createTable tableName="events">
-            <column name="id" type="CHAR(36)" defaultValueComputed="UUID()">
+    <changeSet id="1-create-users-table" author="abdeljabbar">
+        <createTable tableName="users">
+            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="title" type="VARCHAR(150)">
+            <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="description" type="TEXT"/>
+            <column name="email" type="VARCHAR(150)">
+                <constraints nullable="false" unique="true"/>
+            </column>
 
-            <column name="location" type="VARCHAR(200)"/>
-
-            <column name="dateTime" type="DATETIME">
+            <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="capacity" type="INT">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="organizerId" type="CHAR(36)">
+            <column name="role" type="VARCHAR(20)" defaultValue="user">
                 <constraints nullable="false"/>
             </column>
 
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
-
-        <addForeignKeyConstraint
-                baseTableName="events" baseColumnNames="organizerId"
-                referencedTableName="users" referencedColumnNames="id"
-                onDelete="CASCADE"
-                constraintName="fk_event_organizer"/>
     </changeSet>
-
 </databaseChangeLog>
