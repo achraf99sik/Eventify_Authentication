@@ -1,0 +1,15 @@
+# .cursorrules
+When generating commit messages, always use this structure:
+1. First line: <type>: <short summary> (use Conventional Commits)
+2. Then a blank line
+3. Then an indented body with:
+   - A short description paragraph
+   - A "The following changes were made:" list
+   - A final paragraph explaining the impact or purpose
+
+Example:
+
+feat: Add service interfaces for order, product, and stock movement management
+
+    This commit introduces three new service interfaces...
+    ...
