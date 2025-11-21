@@ -6,6 +6,7 @@ import com.eventify.authentication.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -28,7 +29,7 @@ public class EventService {
     //getById
     public Event findById(UUID id){
         return  eventRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("the Event not exist in our database avec id = "+id));
+                .orElseThrow(()->new NoSuchElementException("the Event not exist in our database avec id = "+id));
     }
 
 
