@@ -41,5 +41,11 @@
                 onDelete="CASCADE"
                 constraintName="fk_event_organizer"/>
     </changeSet>
+    <changeSet id="4-rename-column" author="achraf">
+        <renameColumn tableName="events" oldColumnName="dateTime" newColumnName="date_time" />
+    </changeSet>
+    <changeSet id="5-rename-column" author="achraf">
+        <renameColumn tableName="events" oldColumnName="organizerId" newColumnName="organizer_id" />
+    </changeSet>
 
 </databaseChangeLog>
