@@ -30,7 +30,7 @@ public class Event {
 
     private String location;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "date_time")
     private LocalDateTime dateTime;
 
     @Column(nullable = false)
