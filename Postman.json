@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "03f57074-1bcd-4d37-8eb3-9e7c86454d12",
+		"name": "Eventify API",
+		"description": "Collection to test Eventify API with Role Based Access Control.\n\n**Order of Execution for full flow:**\n1. Public -> Register Normal User\n2. Public -> Register Future Organizer\n3. Admin -> Promote User to Organizer\n4. Organizer -> Create Event\n5. User -> Register for Event\n6. User -> View Registrations\n7. Admin -> Delete Event",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "42975360"
+	},
+	"item": [
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "Register Normal User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/public/users"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/public/events"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Actions",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/admin/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Promote User to Organizer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users/{{organizer_user_id}}/role?role=ROLE_ORGANIZER",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"{{organizer_user_id}}",
+								"role"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "ROLE_ORGANIZER"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event (Admin Override)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/api/admin/events/{{event_id}}"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": {
+					"password": "{{admin_pass}}",
+					"username": "{{admin_email}}"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Organizer Actions",
+			"item": [
+				{
+					"name": "Create Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set(\"event_id\", jsonData.id);",
+									"pm.test(\"Event Created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Spring Security Workshop\",\n    \"description\": \"Learn how to secure APIs\",\n    \"location\": \"Online\",\n    \"dateTime\": \"2024-12-01T10:00:00\",\n    \"capacity\": 50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/organizer/events"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Spring Security Workshop (UPDATED)\",\n    \"description\": \"Updated description\",\n    \"location\": \"Online\",\n    \"dateTime\": \"2024-12-01T12:00:00\",\n    \"capacity\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/organizer/events/{{event_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete My Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/api/organizer/events/{{event_id}}"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": {
+					"password": "{{org_pass}}",
+					"username": "{{org_email}}"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User Actions",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/user/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Register for Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/api/user/events/{{event_id}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Registrations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/user/registrations"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": {
+					"password": "{{user_pass}}",
+					"username": "{{user_email}}"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "admin_email",
+			"value": "admin@eventify.com",
+			"type": "string"
+		},
+		{
+			"key": "admin_pass",
+			"value": "admin123",
+			"type": "string"
+		},
+		{
+			"key": "user_email",
+			"value": "john@user.com",
+			"type": "string"
+		},
+		{
+			"key": "user_pass",
+			"value": "password",
+			"type": "string"
+		},
+		{
+			"key": "org_email",
+			"value": "jane@organizer.com",
+			"type": "string"
+		},
+		{
+			"key": "org_pass",
+			"value": "password",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "organizer_user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "event_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
