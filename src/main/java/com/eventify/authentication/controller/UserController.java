@@ -1,21 +1,35 @@
 package com.eventify.authentication.controller;
 
+import com.eventify.authentication.entity.Registration;
 import com.eventify.authentication.entity.User;
+import com.eventify.authentication.services.RegistrationService;
 import com.eventify.authentication.services.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("/api/user")
+@RequiredArgsConstructor
 public class UserController {
-    UserService userService;
-    UserController(UserService userService) {
-        this.userService = userService;
+    private final UserService userService;
+    private final RegistrationService registrationService;
+
+    @GetMapping("/profile")
+    public User getProfile(Authentication authentication) {
+        return userService.getProfile(authentication.getName());
     }
-    @PostMapping("/sign-up")
-    public User signUp(@RequestBody User user) {
-        return userService.CreateUser(user);
+
+    @PostMapping("/events/{id}/register")
+    public Registration registerForEvent(@PathVariable UUID id, Authentication authentication) {
+        return registrationService.registerForEvent(id, authentication.getName());
+    }
+
+    @GetMapping("/registrations")
+    public List<Registration> getMyRegistrations(Authentication authentication) {
+        return registrationService.getUserRegistrations(authentication.getName());
     }
 }
