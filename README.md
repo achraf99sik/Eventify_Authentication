@@ -151,12 +151,13 @@ Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou un
 
 ## 📄 Licence
 
-Ce projet est sous licence [MIT / Apache 2.0 / autre].
+Ce projet est sous licence [MIT](https://github.com/achraf99sik/Eventify_Authentication/blob/main/LICENCE).
 
 ## 👥 Auteurs
 
-- Votre nom
+- [Achraf sikal](https://github.com/achraf99sik)
+- [Abdeljabar moudiri](https://github.com/Abdelmoudiri)
 
 ## 📞 Contact
 
-Pour toute question, contactez : [votre-email@example.com]
+Pour toute question, contactez : [Email](mailto:achrafsikal@gmail.com)
