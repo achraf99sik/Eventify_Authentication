@@ -1,5 +1,6 @@
 package com.eventify.authentication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,9 +39,11 @@ public class Event {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_id", nullable = false)
+    @JsonIgnoreProperties({"organizedEvents", "hibernateLazyInitializer", "handler"})
     private User organizer;
 
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"event", "hibernateLazyInitializer", "handler"})
     private List<Registration> registrations;
 }

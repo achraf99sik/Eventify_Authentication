@@ -1,6 +1,7 @@
 package com.eventify.authentication.entity;
 
 import com.eventify.authentication.entity.enums.RegistrationStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,14 +23,16 @@ public class Registration {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
+    @JsonIgnoreProperties({"organizedEvents", "hibernateLazyInitializer", "handler"})
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "eventId", nullable = false)
+    @JsonIgnoreProperties({"registrations", "hibernateLazyInitializer", "handler"})
     private Event event;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "\"registeredAt\"")
     private LocalDateTime registeredAt;
 
     @Enumerated(EnumType.STRING)

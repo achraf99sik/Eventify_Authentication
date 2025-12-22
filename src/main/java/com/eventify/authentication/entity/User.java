@@ -28,6 +28,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -37,6 +38,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"organizer", "hibernateLazyInitializer", "handler"})
     private List<Event> organizedEvents;
 
 }
