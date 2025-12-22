@@ -8,4 +8,6 @@
     <include file="changeSets/create_users_table.xml" relativeToChangelogFile="true"/>
     <include file="changeSets/create_events_table.xml" relativeToChangelogFile="true"/>
     <include file="changeSets/create_registrations_table.xml" relativeToChangelogFile="true"/>
+    <include file="changeSets/rename-userId-eventId-columns.xml" relativeToChangelogFile="true" />
+    <include file="changeSets/rename-registeredAt-columns.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
